@@ -23,5 +23,4 @@ Example :
 - The CRIX price process.
 - The CRIX return process.
 - The histogram and QQ plots of CRIX return.
-- The ACF and PACF plots of CRIX return.
 

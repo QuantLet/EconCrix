@@ -43,25 +43,3 @@ qqline(ret, col = "blue", lwd = 3)
 # normality test
 ks.test(ret, "pnorm", mean(ret), sd(ret))
 shapiro.test(ret)
-
-# d order
-Box.test(ret, type = "Ljung-Box", lag = 20)
-
-# stationary test
-adf.test(ret, alternative = "stationary")
-kpss.test(ret, null = "Trend")
-
-# acf plot
-autocorr = acf(ret, lag.max = 20, ylab = "Sample Autocorrelation", main = NA, 
-               lwd = 2, ylim = c(-0.3, 1))
-
-# LB test of linear dependence
-print(cbind(autocorr$lag, autocorr$acf))
-Box.test(ret, type = "Ljung-Box", lag = 1, fitdf = 0)
-Box.test(autocorr$acf, type = "Ljung-Box")
-
-# plot of pacf
-autopcorr = pacf(ret, lag.max = 20, ylab = "Sample Partial Autocorrelation", 
-                 main = NA, ylim = c(-0.3, 0.3), lwd = 2)
-print(cbind(autopcorr$lag, autopcorr$acf))
-
