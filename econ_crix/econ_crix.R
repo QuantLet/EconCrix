@@ -8,10 +8,8 @@ lapply(libraries, function(x) if (!(x %in% installed.packages())) {
 })
 lapply(libraries, library, quietly = TRUE, character.only = TRUE)
 
+# load dataset
 load(file = "crix.RData")
-Pr  = as.numeric(crix)
-Da  = factor(date1)
-crx = data.frame(Da, Pr)
 
 # plot of crix
 plot(as.xts(crix), type="l", auto.grid=FALSE, main = NA)
