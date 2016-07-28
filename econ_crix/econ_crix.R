@@ -2,7 +2,7 @@ rm(list = ls(all = TRUE))
 graphics.off()
 
 # install and load packages
-libraries = c("zoo", "tseries")
+libraries = c("zoo", "tseries", "xts")
 lapply(libraries, function(x) if (!(x %in% installed.packages())) {
   install.packages(x)
 })
@@ -14,23 +14,18 @@ Da  = factor(date1)
 crx = data.frame(Da, Pr)
 
 # plot of crix
-plot(crx$Da, crx$Pr, type = "o", main = "CRIX Daily Price Series from Feb 1st, 2014 to April 12nd, 2015")
-plot(crx$Da, crx$Pr, type = "o")
-lines(crx$Pr)
+plot(as.xts(crix), type="l", auto.grid=FALSE, main = NA)
 
 # plot of crix return
-ret   = diff(log(crx$Pr))
-Dare  = factor(date1[-1])
-retts = data.frame(Dare, ret)
-plot(retts$Dare, retts$ret, type = "o")
-lines(retts$ret)
+ret   = diff(log(crix))
+plot(as.xts(ret), type="l", auto.grid=FALSE, main = NA)
 
 mean(ret)
 var(ret)
 sd(ret)
 
 # histogram of price
-hist(Pr, col = "grey", breaks = 40, freq = FALSE)
+hist(crix, col = "grey", breaks = 40, freq = FALSE)
 lines(density(Pr), lwd = 2)
 
 par(mfrow = c(1, 2))
@@ -71,3 +66,4 @@ Box.test(autocorr$acf, type = "Ljung-Box")
 autopcorr = pacf(ret, lag.max = 20, ylab = "Sample Partial Autocorrelation", 
                  main = NA, ylim = c(-0.3, 0.3), lwd = 2)
 print(cbind(autopcorr$lag, autopcorr$acf))
+
