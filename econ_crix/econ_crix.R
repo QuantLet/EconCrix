@@ -2,10 +2,10 @@ rm(list=ls(all=TRUE))
 graphics.off()
 
 # install and load packages
-libraries = c("fOptions", "zoo", "tseries")
-#  lapply(libraries, function(x) if (!(x %in% installed.packages())) {
-#  install.packages(x)
-#})
+libraries = c("zoo", "tseries")
+  lapply(libraries, function(x) if (!(x %in% installed.packages())) {
+  install.packages(x)
+})
 lapply(libraries, library, quietly = TRUE, character.only = TRUE)
 
 #download data via SQL
