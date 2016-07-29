@@ -1,11 +1,15 @@
 rm(list=ls(all=TRUE))
 graphics.off()
 
-require(tseries)
-require(forecast)
-require(FinTS)
+# install and load packages
+libraries = c("FinTS", "tseries", "forecast")
+lapply(libraries, function(x) if (!(x %in% installed.packages())) {
+  install.packages(x)
+})
+lapply(libraries, library, quietly = TRUE, character.only = TRUE)
+
 # please change your working directory
-setwd("~/EconCrix/econ_garch")
+setwd()
 
 load(file="crix.RData")
 Pr = as.numeric(crix)
