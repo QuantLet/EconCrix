@@ -12,11 +12,13 @@ lapply(libraries, library, quietly = TRUE, character.only = TRUE)
 load(file = "crix.RData")
 
 # plot of crix
-plot(as.xts(crix), type="l", auto.grid=FALSE, main = NA)
+# plot(as.xts(crix), type="l", auto.grid=FALSE, main = NA)
+plot(crix1, ylab = NA, xlab = NA)
 
 # plot of crix return
-ret   = diff(log(crix))
-plot(as.xts(ret), type="l", auto.grid=FALSE, main = NA)
+ret   = diff(log(crix1))
+# plot(as.xts(ret), type="l", auto.grid=FALSE, main = NA)
+plot(ret, ylab = NA, xlab = NA)
 
 mean(ret)
 var(ret)
@@ -24,11 +26,11 @@ sd(ret)
 
 # histogram of price
 hist(crix, col = "grey", breaks = 40, freq = FALSE)
-lines(density(Pr), lwd = 2)
+lines(density(crix), lwd = 2)
 
 par(mfrow = c(1, 2))
 # histogram of returns
-hist(ret, col = "grey", breaks = 20, freq = FALSE, ylim = c(0, 25))
+hist(ret, col = "grey", breaks = 20, freq = FALSE, ylim = c(0, 25), xlab = NA)
 lines(density(ret), lwd = 2)
 mu = mean(ret)
 sigma = sd(ret)
@@ -39,7 +41,7 @@ curve(dnorm(x, mean = mean(ret), sd = sd(ret)), add = TRUE, col = "darkblue",
 qqnorm(ret)
 qqline(ret, col = "blue", lwd = 3)
 
-
 # normality test
-ks.test(ret, "pnorm", mean(ret), sd(ret))
-shapiro.test(ret)
+ret1 = diff(log(crix))
+ks.test(ret1, "pnorm", mean(ret), sd(ret))
+shapiro.test(ret1)
