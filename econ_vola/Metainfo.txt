@@ -1,8 +1,8 @@
-Name of QuantLet : econ_arch
+Name of QuantLet : econ_vola
 
 Published in : EconCrix
 
-Description : 'Produces ARCH estimation results using ARIMA model residuals.'
+Description : 'Produces volatility clustering plot of Crix return, ACF and PACF plots of squared residuals derived from ARIMA model.'
 
 Keywords : 
 - graphical representation
@@ -11,7 +11,7 @@ Keywords :
 - data visualization
 - copula
 
-See also : 'econ_arima, econ_crix, econ_garch, econ_vola'
+See also : 'econ_arima, econ_crix, econ_garch, econ_arch'
 
 Author : Shi Chen
 
@@ -20,6 +20,7 @@ Submitted : Thur, July 28 2016 by Shi Chen
 Datafile : 'crix.RData'
 
 Example : 
-- The empirical fitted variogram by GeoCopula.
-- 
+- The volatility clustering plot
+- The comparison of different Crix returns
+- The ACF and PACF of squared residuals.
 
