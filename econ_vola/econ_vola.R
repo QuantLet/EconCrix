@@ -1,9 +1,12 @@
 rm(list = ls(all = TRUE))
 graphics.off()
 
-# require(forecast)
-require(tseries)
-require(FinTS)
+# install and load packages
+libraries = c("FinTS", "tseries")
+lapply(libraries, function(x) if (!(x %in% installed.packages())) {
+  install.packages(x)
+})
+lapply(libraries, library, quietly = TRUE, character.only = TRUE)
 
 # please change your working directory
 setwd("~/EconCrix/econ_vola")
