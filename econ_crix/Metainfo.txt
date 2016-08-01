@@ -9,7 +9,7 @@ Keywords :
 - plot 
 - time-series
 - data visualization
-- copula
+- log-returns
 
 See also : 'econ_arima, econ_arch, econ_garch, econ_vola'
 

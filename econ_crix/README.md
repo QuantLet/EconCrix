@@ -9,20 +9,28 @@ Name of QuantLet : econ_crix
 
 Published in : EconCrix
 
-Description : Produces econometric analysis results using CRIX data.
+Description : 'Produces econometric analysis results using CRIX data.'
 
-Keywords : graphical representation, plot, time-series, data visualization, copula
+Keywords : 
+- graphical representation
+- plot 
+- time-series
+- data visualization
+- log-returns
 
-See also : econ_arima, econ_arch, econ_garch, econ_vola
+See also : 'econ_arima, econ_arch, econ_garch, econ_vola'
 
 Author : Shi Chen
 
 Submitted : Thur, July 28 2016 by Shi Chen
 
-Datafile : crix.RData
+Datafile : 'crix.RData'
 
-Example : 'The CRIX price process., The CRIX return process., The histogram and QQ plots of CRIX
-return.'
+Example : 
+- The CRIX price process.
+- The CRIX return process.
+- The histogram and QQ plots of CRIX return.
+
 
 ```
 
