@@ -9,21 +9,30 @@ Name of QuantLet : econ_arima
 
 Published in : EconCrix
 
-Description : Produces ARIMA estimation results using CRIX data.
+Description : 'Produces ARIMA estimation results using CRIX data.'
 
-Keywords : graphical representation, plot, time-series, data visualization, copula
+Keywords : 
+- graphical representation
+- plot 
+- time-series
+- data visualization
+- arma
+- estimation
 
-See also : econ_arch, econ_crix, econ_garch, econ_vola
+See also : 'econ_arch, econ_crix, econ_garch, econ_vola'
 
 Author : Shi Chen
 
 Submitted : Thur, July 28 2016 by Shi Chen
 
-Datafile : crix.RData
+Datafile : 'crix.RData'
 
-Example: 
-- The ACF and PACF plots of CRIX return.
--
+Example : 
+- The diagnostic checking of ARIMA(1,0,1) model.
+- The diagnostic checking of ARIMA(2,0,2) model. 
+- The forecast plot of ARIMA(2,0,2).
+- The ACF and PACF plots of crix return.
+
 
 ```
 

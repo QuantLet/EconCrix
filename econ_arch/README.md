@@ -9,21 +9,25 @@ Name of QuantLet : econ_arch
 
 Published in : EconCrix
 
-Description : Produces ARCH estimation results using ARIMA model residuals.
+Description : 'Produces ARCH estimation results using ARIMA model residuals.'
 
-Keywords : graphical representation, plot, time-series, data visualization, copula
+Keywords : 
+- graphical representation
+- plot 
+- time-series
+- data visualization
+- estimation
 
-See also : econ_arima, econ_crix, econ_garch, econ_vola
+See also : 'econ_arima, econ_crix, econ_garch, econ_vola'
 
 Author : Shi Chen
 
 Submitted : Thur, July 28 2016 by Shi Chen
 
-Datafile : crix.RData
+Datafile : 'crix.RData'
 
-Example: 
-- The empirical fitted variogram by GeoCopula.
--
+Example : 
+
 
 ```
 
