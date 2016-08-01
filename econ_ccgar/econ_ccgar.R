@@ -1,40 +1,36 @@
 rm(list=ls(all=TRUE))
 graphics.off()
 
-#require(forecast)
-#require(FinTS)
-# please change your working directory
-setwd("~/Dropbox/OP_CRIX/codes")
+# install and load packages
+libraries = c("ccgarch", "rmgarch", "xts", "zoo")
+lapply(libraries, function(x) if (!(x %in% installed.packages())) {
+  install.packages(x)
+})
+lapply(libraries, library, quietly = TRUE, character.only = TRUE)
 
 load(file="crix.RData")
-#Pr = as.numeric(crix)
-#Da= factor(date1)
-#crx = data.frame(Da, Pr)
-
-#plot of crix return
-#ret = diff(log(crx$Pr))
-#Dare = factor(date1[-1])
-#retts = data.frame(Dare, ret)
-#plot(retts$Dare, retts$ret, type="o")
-#lines(retts$ret)
-
-#fit arima model
-#fit202 = arima(ret, order=c(2,0,2))
-#res = fit202$residuals
-
-# fits an EGARCH model with t distributed errors
-#load(file = "btc_index.csv")
 load(file = "ecrix.RData")
 load(file = "efcrix.RData")
-cret = diff(log(crix))
-ecret = diff(log(ecrix))
-efcret = diff(log(efcrix))
-require(ccgarch)
-require(rmgarch)
-require(xts)
-require(zoo)
-require(tseries)
-require(fGarch)
+
+#three indices return 
+ecrix1 = zoo(ecrix, order.by = index(crix1))
+efcrix1 = zoo(efcrix, order.by = index(crix1))
+
+# plot with different x-axis scales with zoo
+my.panel <- function(x, ...) {
+  lines(x, ...)
+  lines(ecrix1, col="blue")
+  lines(efcrix1, col="red")
+  }
+
+plot.zoo(crix1, plot.type="multiple", type="l", lwd=1.5,
+         panel=my.panel, main="Indices in the CRIX family")
+
+#crix return
+cret = diff(log(crix1))
+ecret = diff(log(ecrix1))
+efcret = diff(log(efcrix1))
+rix =  zoo(cbind(cret,ecret,efcret), order.by = index(crix1))
 
 #arima fitting for each index
 cr.arfit = arima(cret, order=c(2,0,2))
@@ -49,151 +45,95 @@ efcr.arfit = arima(efcret, order=c(2,0,2))
 tsdiag(cr.arfit)
 efcres = efcr.arfit$residuals
 
+rixres =  zoo(cbind(cres,ecres,efcres), order.by = index(crix1))
 
-garch11.spec = ugarchspec(mean.model = list(armaOrder = c(2,2)),
-                          variance.model = list(garchOrder = c(1,1),model = "sGARCH"),
-                          distribution.model = "std")
-dcc.garch11.spec = dccspec(uspec = multispec( replicate(2, garch11.spec) ), 
-                           dccOrder = c(1,1), distribution = "mvnorm")
-dcc.garch11.spec
-
-######crix and ecrix
-#zcret = as.xts(cret)
-sample1 = cbind(as.xts(cres),as.xts(ecres))
-sample11 = cbind(as.xts(cret),as.xts(ecret))
-dcc.fit1 = dccfit(dcc.garch11.spec, data = sample11)
-class(dcc.fit1)
-names(dcc.fit@mfit1)
-dcc.fit1
-plot(dcc.fit1)
-# 100-step ahead forecasts of conditional covariances and conditional correlations
-dcc.fcst1 = dccforecast(dcc.fit1, n.ahead=100)
-class(dcc.fcst1)
-dcc.fcst1
-plot(dcc.fcst1)
-
-
-######crix and efcrix
-sample2 = cbind(as.xts(cret),as.xts(efcret))
-dcc.fit2 = dccfit(dcc.garch11.spec, data = sample2)
-dcc.fit2
-plot(dcc.fit2)
-# 100-step ahead forecasts of conditional covariances and conditional correlations
-dcc.fcst2 = dccforecast(dcc.fit2, n.ahead=100)
-plot(dcc.fcst2)
-
-######ecrix and efcrix
-sample3 = cbind(as.xts(ecret),as.xts(efcret))
-dcc.fit3 = dccfit(dcc.garch11.spec, data = sample3)
-dcc.fit3
-plot(dcc.fit3)
-# 100-step ahead forecasts of conditional covariances and conditional correlations
-dcc.fcst3 = dccforecast(dcc.fit3, n.ahead=100)
-plot(dcc.fcst3)
-
-par(mfrow=c(3,1))
-plot(dcc.fit1)
-plot(dcc.fit2)
-plot(dcc.fit3)
-
-
-
-par(mfrow=c(1,1))
-
-######crix, ecrix and efcrix
-sampleall = cbind(as.xts(cret), as.xts(ecret),as.xts(efcret))
-garch11.spec = ugarchspec(mean.model = list(armaOrder = c(2,2)),
-                          variance.model = list(garchOrder = c(2,2),model = "sGARCH"),
-                          distribution.model = "std")
+# crix, ecrix and efcrix
+garch11.spec = ugarchspec(mean.model = list(armaOrder = c(0,0)),
+                          variance.model = list(garchOrder = c(1,1),model = "sGARCH"))
 
 dcc.garch11.spec = dccspec(uspec = multispec( replicate(3, garch11.spec) ), 
-                           #                          dccOrder = c(1,1), distribution = "mvnorm")
-                           dccOrder = c(1,1), distribution = "mvt")
-#                           dccOrder = c(1,1), distribution = "mvlaplace")
-dcc.fitall = dccfit(dcc.garch11.spec, data = sampleall)
-dcc.fitall
-plot(dcc.fitall, auto.grid = FALSE)
+                           dccOrder = c(1,1), distribution = "mvnorm")
 
-plot(dcc.fitall, pair = c(1,2), which =4)
-plot(dcc.fitall, pair = c(1,3), which =4)
+fitall = dccfit(dcc.garch11.spec, data = rixres)
+print(fitall)
 
-nisurface(dcc.fitall, pair=c(1,2), plot=T)
-nisurface(dcc.fitall, pair=c(1,3))
-nisurface(dcc.fitall, pair=c(2,3))
+fitall@mfit$Qbar #unconditional covariance matrix
 
-#DCC conditional covariance
-par(mfrow=c(3,1))
-rcovr = rcov(dcc.fitall)
-plot(rcovr[1,2,], type ="l", lwd=2, ylab=NA, main="crix v.s. ecrix")
-plot(rcovr[1,3,], type ="l", lwd=2, ylab=NA, main="ecrix v.s. ecrix")
-plot(rcovr[2,3,], type ="l", lwd=2, ylab=NA, main="crix v.s. ecrix")
-
-rcovr1=data.frame(rcovr[1,2,], names(rcovr[1,2,]))
-plot(rcovr1$names.rcovr.1..2...., rcovr1$rcovr.1..2..., type="o")
-lines(rcovr1$rcovr.1..2...)
-rcovr2=data.frame(rcovr[1,3,], names(rcovr[1,3,]))
-plot(rcovr2$names.rcovr.1..3...., rcovr2$rcovr.1..3..., type="o")
-lines(rcovr2$rcovr.1..3...)
-rcovr3=data.frame(rcovr[2,3,], names(rcovr[2,3,]))
-plot(rcovr3$names.rcovr.2..3...., rcovr3$rcovr.2..3..., type="o")
-lines(rcovr3$rcovr.2..3...)
-
-#DCC conditional correlation plot
-rcorr = rcor(dcc.fitall)
-#rcorr1 = zoo(rcorr[1,2, ], order.by = names(rcorr[1,2,]))
-plot(rcorr[1,2,],type ="l", lwd=2, ylab=NA)
-plot(rcorr[1,3,], type ="l", lwd=2, ylab=NA)
-plot(rcorr[2,3,], type ="l", lwd=2, ylab=NA)
-
-rcorr1=data.frame(rcorr[1,2,], names(rcorr[1,2,]))
-plot(rcorr1$names.rcorr.1..2...., rcorr1$rcorr.1..2..., type="o")
-lines(rcorr1$rcorr.1..2...)
-rcorr2=data.frame(rcorr[1,3,], names(rcorr[1,3,]))
-plot(rcorr2$names.rcorr.1..3...., rcorr2$rcorr.1..3..., type="o")
-lines(rcorr2$rcorr.1..3...)
-rcorr3=data.frame(rcorr[2,3,], names(rcorr[2,3,]))
-plot(rcorr3$names.rcorr.2..3...., rcorr3$rcorr.2..3..., type="o")
-lines(rcorr3$rcorr.2..3...)
-
-# 100-step ahead forecasts of conditional covariances and conditional correlations
-dcc.fcstall = dccforecast(dcc.fitall, n.ahead=100)
-plot(dcc.fcstall, pairs(1,3))
-
-
-
-#three indices return 
-plot(as.xts(cret), type="l")
-lines(as.xts(ecret), col="blue")
-lines(as.xts(efcret), col="red")
-
-plot(as.xts(crix), type="l", main="Indices in CRIX family", auto.grid = FALSE)
-lines(as.xts(ecrix), col="blue")
-lines(as.xts(efcrix), col="red")
-
-##standard residual plot
+#standard error of DCC
+fitall@mfit$stdresid
 par(mfrow=c(1,1))
-res2 = dcc.fitall@mfit$stdresid
+serr = zoo(fitall@mfit$stdresid, order.by = index(crix1))
+plot.zoo(serr, plot.type="multiple", type="l", lwd=1.5, main=NA,xlab=NA)
 
-res2[which.min(res2[,1]),1]=0
-plot(res2[,1], ylim=c(-7,7))
+#new impact covariance surface 
+par(mfrow=c(3,1))
+nisurface(fitall, pair=c(1,2), plot=T)
+nisurface(fitall, pair=c(1,3), plot=T)
+nisurface(fitall, pair=c(2,3), plot=T)
 
+##DCC conditional covariance
+par(mfrow=c(3,1))
+rcovr = rcov(fitall)
+fitall@mfit$H # same as rcov(fitall)
+#realized vola and estimated vola
+plot(rcovr[1,1,], type ="l", lwd=2, xlab="days", ylab="crix")
+lines(c(cres^2), col="grey", lty=2)
+plot(rcovr[2,2,], type ="l", lwd=2, xlab="days", ylab ="ecrix")
+lines(c(ecres^2), col="grey", lty=2)
+plot(rcovr[3,3,], type ="l", lwd=2, xlab="days", ylab="efcrix")
+lines(c(efcres^2), col="grey", lty=2)
 
+###DCC conditional correlation plot
+rcorr = rcor(fitall)
+rcorr1 = as.zoo(rcorr[1, , ])
+par(mfrow=c(3,1))
+plot(zoo(rcorr[1,2,], order.by = index(crix1)), lwd=2, ylab=NA, xlab=NA, main="CRIX v.s. ECRIX")
+plot(zoo(rcorr[1,3,], order.by = index(crix1)), lwd=2, ylab=NA, xlab=NA, main="CRIX v.s. EFCRIX")
+plot(zoo(rcorr[2,3,], order.by = index(crix1)), lwd=2, ylab=NA, xlab=NA, main="ECRIX v.s. EFCRIX")
 
+#acf and pacf
+par(mfrow=c(3,2))
+stdres = fitall@mfit$stdresid
 
+acf(cres^2, ylab="CRIX", lag.max = 20, main="ACF of Premodel Residuals", lwd = 2)
+acf(stdres[,1]^2, ylab="CRIX", lag.max = 20, main="ACF of DCC Residuals", lwd = 2)
+acf(ecres^2, ylab="ECRIX", lag.max = 20, main="ACF of Premodel Residuals", lwd = 2)
+acf(stdres[,2]^2, ylab="ECRIX", lag.max = 20, main="ACF of DCC Residuals", lwd = 2)
+acf(efcres^2, ylab="EFCRIX", lag.max = 20, main="ACF of Premodel Residuals", lwd = 2)
+acf(stdres[,3]^2, ylab="EFCRIX", lag.max = 20, main="ACF of DCC Residuals", lwd = 2)
 
-plot(res2[,1], ylim=c(-7,7), type="l", lwd=2)
-lines(res2[,2], col="red")
-lines(res2[,3], col="blue")
-acfdccall = acf(res2, ylab=NA, lag.max = 20, main="ACF of Residuals", lwd = 2)
-pacfdccall = pacf(res2, lag.max = 20, main="PACF of Residuals", lwd = 2, ylab=NA)
+pacf(cres^2, lag.max = 20, main="PACF of Premodel Residuals", lwd = 2, ylab="CRIX")
+pacf(stdres[,1]^2, lag.max = 20, main="PACF of DCC Residuals", lwd = 2, ylab="CRIX")
+pacf(ecres^2, lag.max = 20, main="PACF of Premodel Residuals", lwd = 2, ylab="ECRIX")
+pacf(stdres[,2]^2, lag.max = 20, main="PACF of DCC Residuals", lwd = 2, ylab="ECRIX")
+pacf(efcres^2, lag.max = 20, main="PACF of Premodel Residuals", lwd = 2, ylab="EFCRIX")
+pacf(stdres[,3]^2, lag.max = 20, main="PACF of DCC Residuals", lwd = 2, ylab="EFCRIX")
 
-##qq
-set.seed(100)
-x = rnorm(100)
-xx = rt(100)
-qqplot(c(res2[,1]), xx, col="blue", lwd=2, ylim=c(-4,4), xlim=c(-4,4))
-qqline(c(res2[,1]))
+# 100-step ahead forecasts of estimated vola
+fitallpred = dccforecast(fitall, n.ahead=100)
+plot(fitallpred, pair=c(1,3), which=3)
 
-res22 = (dcc.fitall@mfit$stdresid)^2
-acfdccall = acf(res22, ylab=NA, lag.max = 20, main="ACF of Squared Residuals", lwd = 2)
-pacfdccall = pacf(res22, lag.max = 20, main="PACF of Squared Residuals", lwd = 2, ylab=NA)
+rcovrfore = fitallpred@mforecast$H[[1]]
+rrr =  seq(616, 715, 1)
+fores1 = zoo(rcovrfore[1,1,], order.by = rrr)
+fores2 = zoo(rcovrfore[2,2,], order.by = rrr)
+fores3 = zoo(rcovrfore[3,3,], order.by = rrr)
+
+par(mfrow=c(3,1))
+plot(rcovr[1,1,], type ="l", lwd=2, xlab="days", ylab="crix", xlim=c(0,715))
+lines(c(cres^2), col="grey", lty=2)
+lines(fores1, xlim=c(616,715), col="red", lwd=2)
+
+plot(rcovr[2,2,], type ="l", lwd=2, xlab="days", ylab ="ecrix", xlim=c(0,715))
+lines(c(ecres^2), col="grey", lty=2)
+lines(fores2, xlim=c(616,715), col="red", lwd=2)
+
+plot(rcovr[3,3,], type ="l", lwd=2, xlab="days", ylab="efcrix", xlim=c(0,715))
+lines(c(efcres^2), col="grey", lty=2)
+lines(fores3, xlim=c(616,715), col="red", lwd=2)
+
+# corr forecast
+forecorr = fitallpred@mforecast$Q[[1]]
+fores1 = zoo(forecorr[1,2,], order.by = rrr)
+fores2 = zoo(forecorr[1,3,], order.by = rrr)
+fores3 = zoo(forecorr[2,3,], order.by = rrr)
