@@ -9,21 +9,27 @@ Name of QuantLet : econ_vola
 
 Published in : EconCrix
 
-Description : 'Produces volatility clustering plot of Crix return, ACF and PACF plots of squared
-residuals derived from ARIMA model.'
+Description : 'Produces volatility clustering plot of Crix return, ACF and PACF plots of squared residuals derived from ARIMA model.'
 
-Keywords : graphical representation, plot, time-series, data visualization, copula
+Keywords : 
+- graphical representation
+- plot 
+- time-series
+- data visualization
+- volatility
 
-See also : econ_arima, econ_crix, econ_garch, econ_arch
+See also : 'econ_arima, econ_crix, econ_garch, econ_arch'
 
 Author : Shi Chen
 
 Submitted : Thur, July 28 2016 by Shi Chen
 
-Datafile : crix.RData
+Datafile : 'crix.RData'
 
-Example : 'The volatility clustering plot, The comparison of different Crix returns, The ACF and
-PACF of squared residuals.'
+Example : 
+- The volatility clustering plot
+- The comparison of different Crix returns
+- The ACF and PACF of squared residuals.
 
 ```
 
