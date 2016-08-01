@@ -1,4 +1,4 @@
-Name of QuantLet : econ_arch
+Name of QuantLet : econ_ccgar
 
 Published in : EconCrix
 
