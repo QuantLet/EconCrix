@@ -5,7 +5,7 @@
 
 ```yaml
 
-Name of QuantLet : econ_ccgarch
+Name of QuantLet : econ_tgarch
 
 Published in : EconCrix
 
@@ -20,7 +20,7 @@ Keywords :
 - forecast
 - estimation
 
-See also : 'econ_arima, econ_crix, econ_arch, econ_vola'
+See also : 'econ_arima, econ_crix, econ_arch, econ_garch, econ_vola'
 
 Author : Shi Chen
 
