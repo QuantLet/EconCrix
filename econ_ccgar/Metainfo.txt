@@ -2,14 +2,16 @@ Name of QuantLet : econ_arch
 
 Published in : EconCrix
 
-Description : 'Produces ARCH estimation results using ARIMA model residuals.'
+Description : 'Produces DCC-GARCH estimation results using ARIMA model residuals.'
 
 Keywords : 
 - graphical representation
 - plot 
 - time-series
 - data visualization
-- copula
+- garch
+- forecast
+- estimation
 
 See also : 'econ_arima, econ_crix, econ_garch, econ_vola'
 
@@ -17,9 +19,12 @@ Author : Shi Chen
 
 Submitted : Thur, July 28 2016 by Shi Chen
 
-Datafile : 'crix.RData'
+Datafile : 'crix.RData, ecrix.RData, efcrix.RData'
 
 Example : 
-- The empirical fitted variogram by GeoCopula.
-- 
-
+- The time path of three indices in the crix family
+- The standard DCC-GARCH model residuals.
+- The estimated and realised volatility using DCC-GARCH model
+- The 100-ahead forecast of volatility using DCC-GARCH model
+- The estimated correlation using DCC-GARCH model
+- The 100-ahead forecast of correlation using DCC-GARCH model

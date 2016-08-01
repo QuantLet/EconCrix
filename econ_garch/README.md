@@ -9,20 +9,31 @@ Name of QuantLet : econ_garch
 
 Published in : EconCrix
 
-Description : Produces GARCH estimation results using ARIMA model residuals.
+Description : 'Produces GARCH estimation results using ARIMA model residuals.'
 
-Keywords : graphical representation, plot, time-series, data visualization, copula
+Keywords : 
+- graphical representation
+- plot 
+- time-series
+- data visualization
+- garch
+- forecast
+- estimation
 
-See also : econ_arima, econ_crix, econ_arch, econ_vola
+See also : 'econ_arima, econ_crix, econ_arch, econ_vola'
 
 Author : Shi Chen
 
 Submitted : Thur, July 28 2016 by Shi Chen
 
-Datafile : crix.RData
+Datafile : 'crix.RData'
 
-Example : 'The ARIMA-GARCH model residuals., The ACF and PACF plots using GARCH(1,1) model, The ACF
-and PACF plots using GARCH(1,2) model, The QQ plot of GARCH(1,1) residuals.'
+Example : 
+- The ARIMA-GARCH model residuals.
+- The ACF and PACF plots using GARCH(1,1) model
+- The ACF and PACF plots using GARCH(1,2) model 
+- The QQ plot of GARCH(1,1) residuals.
+
 
 ```
 

@@ -1,4 +1,4 @@
-Name of QuantLet : econ_tgarch
+Name of QuantLet : econ_ccgarch
 
 Published in : EconCrix
 
@@ -9,7 +9,9 @@ Keywords :
 - plot 
 - time-series
 - data visualization
-- copula
+- garch
+- forecast
+- estimation
 
 See also : 'econ_arima, econ_crix, econ_arch, econ_vola'
 
