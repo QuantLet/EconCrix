@@ -1,4 +1,4 @@
-Name of QuantLet : econ_tgarch
+Name of QuantLet : econ-tgarch
 
 Published in : EconCrix
 
