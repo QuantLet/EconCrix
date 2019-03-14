@@ -38,10 +38,9 @@ stu.pacfres2 = pacf(stu.fg11res2, lag.max = 20, main = "PACF of Squared Residual
 par(mfrow = c(1, 1))
 plot(fg11stu, which = 13)
 
-### fGarch:::.plot.garch.13
+# or use the following
 library(bsts)
-aa=function (x, ...) 
-{
+qqplot.squ = function (x, ...){
   sres = residuals(x, standardize = TRUE)
   cond.dist = x@fit$params$cond.dist
   cond.dist = paste("q", cond.dist, sep = "")
@@ -57,14 +56,6 @@ aa=function (x, ...)
     .qqDist(sres, dist = "qnorm")
   if (cond.dist == "qstd" | cond.dist == "qged") 
     .qqDist(sres, dist = cond.dist, nu = shape,ylim=c(-6.7,6.7))
-  if (cond.dist == "qsnorm") 
-    .qqDist(sres, dist = cond.dist, xi = skew)
-  if (cond.dist == "qsstd" | cond.dist == "qsged") 
-    .qqDist(sres, dist = cond.dist, xi = skew, nu = shape)
-  if (cond.dist == "qsnig") 
-    .qqDist(sres, dist = ".qsnigC", rho = skew, zeta = shape)
 }
 
-aa(x = fg11stu)
-
-  
+qqplot.squ(x = fg11stu)
