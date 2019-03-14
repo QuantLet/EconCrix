@@ -36,6 +36,8 @@ Example :
 
 ```
 
+![Picture1](qq_stu_square.png)
+
 ![Picture1](qq_stu.png)
 
 ![Picture2](tgarch11_pred.png)
