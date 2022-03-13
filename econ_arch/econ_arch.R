@@ -29,7 +29,7 @@ par(mfrow = c(1, 1))
 # arch effect
 res = fit202$residuals
 ArchTest(res)
-Box.test(res2, type = "Ljung-Box")
+Box.test(res, type = "Ljung-Box")
 
 # ArchTest(ret) arch1 model arch models
 crar1 = garch(res, order = c(0, 1))
